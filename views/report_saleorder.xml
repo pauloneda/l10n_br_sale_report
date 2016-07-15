@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<template id="oneda_report_saleorder_style" inherit_id="report.style">
+		  <xpath expr=".">
+			<t>
+			  body{font-size:11px;}
+			  .table > tbody > tr > td, .table > tfoot > tr > td {
+				padding: 0;
+				padding-right:3px;
+				padding-left:3px;
+			  }
+			  .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td{		
+				border: 1px solid #999;
+			  }
+			  .color-red{color:#9A313B;}
+			  .fundo{background-color:#E6E7E8;padding:0;}
+			  .div-border{border-top: 1px solid black !important;}
+			  .tdtop{font-size:8px;}
+			  .r90 {
+					-webkit-transform: rotate(90deg);
+					-moz-transform: rotate(90deg);
+					-o-transform: rotate(90deg);
+					-ms-transform: rotate(90deg);
+					transform: rotate(90deg);
+					width: 1em;
+					line-height: 1.8ex;
+					font-family:verdana;
+					margin: auto;
+				}
+			  .vertical-text-fundo {
+					background-color:#C93F4D;
+					color: #E6E7E8;
+					font-weight: bold;
+				}
+				.val_col{width: 67px;}
+			</t>
+		  </xpath>
+		</template>
+        <template id="l10n_br_sale_report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+            <!--Cabeçalho -->
+			<xpath expr="//div[@class='col-xs-6']" position="replace">
+                <table class="table table-bordered" style="margin-bottom:3px;">
+						<tbody>
+						  <tr>
+							 <td class="text-center" colspan="9">
+							 <h4>
+								<span t-if="o.state not in ['draft','waitingapproval','sent']">Pedido de <span t-field="o.fiscal_category_id.name"/></span>
+								<span t-if="o.state in ['draft','waitingapproval','sent']">Orçamento <span t-field="o.fiscal_category_id.name"/></span>
+								<span t-field="o.name"/>
+							</h4>
+							</td>
+						  </tr>
+						  <tr>
+						   <td >
+								<div class="tdtop" t-if="o.state not in ['draft','sent']">Pedido:</div>
+								<div class="tdtop" t-if="o.state in ['draft','sent']">Orçamento:</div>
+								<div class="text-center"   t-field="o.name"/>
+							</td>
+						   <td >
+								<div class="tdtop">Orc. Origem:</div>
+								<div class="text-center"  t-field="o.origin"/>
+							</td>
+						   <td>
+								<div class="tdtop">Vendedor:</div>
+								<span t-field="o.user_id.name"/>
+						   </td>
+						   <td>
+								<div class="tdtop">Contato:</div>
+								<span t-field="o.partner_id.legal_name_ent"/>
+							</td>
+						   <td colspan="3">
+								<div class="tdtop">Email:</div>
+								<span t-field="o.partner_id.email_fin"/>
+						   </td>
+						   <td >
+								<div class="tdtop">Emissão:</div>
+								<div  class="text-right" t-if="o.state in ['draft','sent']"><span t-field="o.date_order" t-field-options='{"format": "dd.MM.yyyy"}'/></div>
+								<div  class="text-right" t-if="o.state not in ['draft','sent']"><span t-field="o.date_confirm" t-field-options='{"format": "dd.MM.yyyy"}'/></div>
+						   </td>
+						   <td  >
+								<div class="tdtop" t-if="o.state not in ['draft','sent']">Previsão de Entrega:</div>
+								<div style="font-size:8px; color:#C93F4D;" t-if="o.state in ['draft','sent']">Válido Até:</div>
+								<span t-if="o.state not in ['draft','sent']"><div  class="text-right" t-field="o.requested_date" t-field-options='{"format": "dd.MM.yyyy"}'/> </span>
+								<span t-if="o.state in ['draft','sent']" style="color:#C93F4D"><div  class="text-right" t-field="o.validity_date" t-field-options='{"format": "dd.MM.yyyy"}'/></span>
+						   </td>
+						  </tr>
+						  <tr>
+						   <td colspan="4">
+								<div class="tdtop">Nome/Razão Social:</div>
+								<strong t-field="o.partner_id.legal_name"/>
+						   </td>
+						   <td colspan="3" >
+								<div class="tdtop">CPF/CNPJ:</div>
+								<strong class="text-center" t-field="o.partner_id.cnpj_cpf"/>
+							</td>
+						   <td colspan="2" >
+								<div class="tdtop">Inscrição Estadual:</div>
+								<strong class="text-center" t-field="o.partner_id.inscr_est"/>
+						   </td>					  
+						  </tr>
+						  <tr>
+						   <td colspan="3">
+								<div class="tdtop">Endereço:</div>
+								<span t-field="o.partner_id.street"/>
+						   </td>
+						   <td >
+								<div class="tdtop">Número:</div>
+								<div  class="text-right" t-field="o.partner_id.number"/>
+						   </td>
+						   <td colspan="3">
+								<div class="tdtop">Complemento:</div>
+								<span t-field="o.partner_id.street2"/>
+							</td>
+						   
+						   <td >
+								<div class="tdtop">CEP:</div>
+								<div class="text-center" t-field="o.partner_id.zip"/>
+						   </td>
+						   <td  >
+								<div class="tdtop">Bairro:</div>
+								<div class="text-center" t-field="o.partner_id.district"/>
+						   </td>					   
+						  </tr>
+						   <tr>
+						   <td colspan="2">
+								<div class="tdtop">Município:</div>
+								<span t-field="o.partner_id.l10n_br_city_id.name"/>
+						   </td>
+						   <td >
+								<div class="tdtop">Estado:</div>
+								<span t-field="o.partner_id.state_id"/>
+							</td>
+						   <td colspan="3">
+								<div class="tdtop">Telefone:</div>
+								<span t-field="o.partner_id.phone"/>
+						   </td>
+						   <td colspan="3">
+								<div class="tdtop">Celular:</div>
+								<span t-field="o.partner_id.mobile"/>
+						   </td>					  
+						  </tr>
+						</tbody>
+				</table>
+				<table class="table table-bordered" style="margin-bottom:3px;" t-if="o.partner_shipping_id and o.partner_shipping_id.id != o.partner_id.id">
+					<tbody>
+					  <tr>
+						<td rowspan="4" class="vertical-text-fundo" style="width: 15px;">
+							<div style="padding:5px">
+								<div>
+									<div class="r90">E</div>
+									<div class="r90">N</div>
+									<div class="r90">T</div>
+									<div class="r90">R</div>
+									<div class="r90">E</div>
+									<div class="r90">G</div>
+									<div class="r90">A</div>
+								</div>
+							</div>
+						</td>
+						<td colspan="2"  valign="top">
+							<div class="tdtop">Endereço</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.street"/>
+						</td>
+						<td colspan="4"  valign="top">
+							<div class="tdtop">Número</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.number"/>
+						</td>
+						<td colspan="2"  valign="top">
+							<div class="tdtop">Bairro</div>
+						  <strong class="color-red" t-field="o.partner_shipping_id.district"/>
+						</td>
+					  </tr>
+					  <tr>
+						<td  valign="top">
+							<div class="tdtop">Estado</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.state_id.name"/>
+						</td>
+						<td colspan="2" valign="top">
+							<div class="tdtop">Município</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.l10n_br_city_id.name"/>
+						</td>
+						<td colspan="2"  valign="top">
+							<div class="tdtop">Cep</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.zip"/>
+						</td>
+						<td colspan="2" valign="top">
+							<div class="tdtop">Telefone</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.phone"/>
+						</td>
+						<td  valign="top">
+							<div class="tdtop">Celular</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.mobile"/>
+						</td>
+					  </tr>
+					  <tr t-if="o.partner_shipping_id.street2">
+						<td colspan="8" valign="top">
+							<div class="tdtop">Complemento</div>
+							<strong class="color-red" t-field="o.partner_shipping_id.street2"/>
+						</td>
+					  </tr>
+					  <tr>
+						<td colspan="8"  valign="top">
+							<div class="tdtop">Observações de entrega:</div>
+							<strong>Contato:  <span class="color-red" t-field="o.partner_shipping_id.name"/> <br />
+								<span class="color-red" t-field="o.partner_shipping_id.comment"/></strong></td>
+					  </tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered" style="margin:0">
+					<tbody>
+					  <tr >
+						 <td class="text-left">
+							<div t-if="o.note">Observações:<span class="color-red" t-field="o.note"/></div>
+						</td>
+					  </tr>
+					 </tbody>
+				</table>
+            </xpath>
+			<!-- Fim Cabeçalho -->
+			
+            <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']" position="replace">
+			</xpath>
+			<xpath expr="//div[@class='page']/h2" position="replace">
+			</xpath>
+			<!--<xpath expr="//div[@class='row mt32 mb32']/div[@class=='col-xs-3']" position="replace">
+			</xpath>-->
+			<!--Totais -->
+			<xpath expr="//div[@class='col-xs-4 pull-right']" position="replace">
+				<div class="col-xs-4 pull-right">
+				  <table class="table table-condensed">
+					
+					 <tr class="border-black" t-if="o.amount_discount">
+						<td>
+						  <strong>Valor Bruto</strong>
+						</td>
+						<td class="text-right">
+						  <span t-field="o.amount_gross" t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+						</td>
+					 </tr>
+					 <tr class="border-black" t-if="o.amount_discount">
+						<td>
+						  <strong>Desconto</strong>
+						</td>
+						<td class="text-right">
+						  <span t-field="o.amount_discount" t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+						</td>
+					 </tr>
+					 <tr class="border-black">
+						<td>
+						  <strong>SubTotal</strong>
+						</td>
+						<td class="text-right">
+						  <span t-field="o.amount_untaxed" t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+						</td>
+					 </tr>
+					 <tr class="border-black" t-if="o.amount_freight">
+						<td>
+						  <strong>Frete</strong>
+						</td>
+						<td class="text-right">
+						  <span t-field="o.amount_freight" t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+						</td>
+					 </tr>
+					 <tr class="border-black" t-if="o.amount_insurance">
+						<td>
+						  <strong>Seguro</strong>
+						</td>
+						<td class="text-right">
+						  <span t-field="o.amount_insurance" t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+						</td>
+					 </tr>
+					 <tr class="border-black" t-if="o.amount_costs">
+						<td>
+						  <strong>Outros Custos</strong>
+						</td>
+						<td class="text-right">
+						  <span t-field="o.amount_costs" t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+						</td>
+					 </tr>
+					 <tr class="border-black">
+						<td>
+						  <strong>Total</strong>
+						</td>
+						<td class="text-right">
+						  <span t-field="o.amount_total" t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+						</td>
+					 </tr>
+				  </table>
+				</div>
+			</xpath>
+            
+			<!--Fim Totais -->
+			
+            <xpath expr="//div[@class='col-xs-4 pull-right']" position="before">
+					 <t t-if="o._name=='sale.order'">
+						 <t t-set="installments" t-value="o.payment_installment_ids"/>
+					  </t>
+					 <div class="col-xs-8 pull-left" style="padding:0">
+						 <div t-if="o.payment_term">
+							<strong>Forma de Pagamento:</strong>
+							<span t-field="o.payment_mode_id"/> [<span t-field="o.payment_term"/>] <span t-if="o.form_calc" class="color-red">( A Partir da Entrega )</span>
+						 </div>
+						<div class="col-xs-4 pull-left" style="padding:0 1px 1px 0" t-foreach="installments" t-as="i">
+						 <table class="table table-bordered" style="margin:0">
+							<tbody>
+							  <tr style="border-bottom:none;color:#0000FF;">
+								 <td class="text-left"><div style="font-size:9px;" t-field="i.due_date" t-field-options='{"format": "dd.MM.yyyy"}'/></td>
+								 <td class="text-left"><div style="font-size:9px;" t-field="i.payment_mode_id.name"/></td>
+								 <td class="text-left" style="border-left:none;font-size:9px;"><div>R$ <span t-field="i.amount" /></div></td>
+							  </tr>
+							</tbody>
+						 </table>
+						 </div>
+					</div>
+			</xpath>
+            <xpath expr="//div[@class='page']/div[@id='informations']" position="replace">
+			</xpath>
+			<xpath expr="//table[@class='table table-condensed']" position="attributes">
+				<attribute name="class">table table-bordered table-striped</attribute>
+			</xpath>
+			<xpath expr="//div[@class='row']" position="attributes">
+				<attribute name="class"></attribute>
+			</xpath>
+			<xpath expr="//div[@class='row']" position="attributes">
+				<attribute name="class"></attribute>
+			</xpath>			
+			<xpath expr="/t[1]/t[1]/div[1]/p" position="replace">
+			</xpath>
+			<xpath expr="/t[1]/t[1]/div[1]/p[1]" position="replace">
+			</xpath>
+        </template>
+		
+		<template id="l10n_br_sale_report_sale_layouted_inherit" inherit_id="sale_layout.report_sale_layouted">		
+            <xpath expr="//thead/tr/th[2]" position="replace">			
+            </xpath>
+			<xpath expr="//t[1]/t[1]/div[1]/table[1]/thead[1]/tr[1]/th[2]" position="replace">
+				<th class="text-right val_col">Quant.</th>
+            </xpath>
+			<xpath expr="//t/t[2]/tr[1]/td[2]" position="replace">
+				<td class="text-right val_col">
+					<span t-field="l.product_uom_qty"/>
+				</td>
+			</xpath>
+			<xpath expr="//t[1]/t[1]/div[1]/table[1]/thead[1]/tr[1]/th[3]" position="replace">
+				<th class="text-right val_col">R$ Unit.</th>
+            </xpath>			
+			<xpath expr="//t/t[2]/tr[1]/td[2]" position="replace">
+				 <td class="text-right val_col" >
+					<span t-field="l.price_unit" 
+                                    t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+				 </td>
+			</xpath>
+			<xpath expr="//t[1]/t[1]/div[1]/table[1]/thead[1]/tr[1]/th[4]" position="replace">
+                <t t-if="o.amount_discount">
+                    <th class="text-right val_col" groups="sale.group_discount_per_so_line">Disc.(%)</th>
+                </t>
+            </xpath>
+            <xpath expr="//t/t[2]/tr[1]/td[2]" position="replace">			
+            </xpath>			
+            <xpath expr="//t/t[2]/tr[1]/td[4]" position="replace">
+                <t t-if="o.amount_discount">
+                    <td class="text-right val_col" groups="sale.group_discount_per_so_line">
+                        <span t-field="l.discount"/>
+                    </td>
+                </t>
+            </xpath>
+			
+			<xpath expr="//t[1]/t[1]/div[1]/table[1]/thead[1]/tr[1]/th[2]" position="before">
+				<th class="text-right val_col">NCM</th>
+            </xpath>
+			<xpath expr="//t/t[2]/tr[1]/td[2]" position="before">
+				<td class="text-right val_col">
+					<span t-field="l.product_id.fiscal_classification_id"/>
+				</td>
+			</xpath>
+        </template>
+		
+    </data>
+</openerp>
