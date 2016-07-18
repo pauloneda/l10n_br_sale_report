@@ -27,7 +27,7 @@
     'website': 'http://www.oneda.net.br',
     'version': '8.0.0.0.0',
     'sequence': 1,
-    'depends': ['sale','l10n_br_sale','sale_layout', 'trust_installment_plans'],
+    'depends': ['sale','l10n_br_sale','sale_layout', 'trust_installment_plans','l10n_br_sale_discount_total'],
     'data': [
         'views/report_saleorder.xml',
     ],
