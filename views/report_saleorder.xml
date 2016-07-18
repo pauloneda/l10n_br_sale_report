@@ -46,7 +46,7 @@
 							 <td class="text-center" colspan="9">
 							 <h4>
 								<span t-if="o.state not in ['draft','waitingapproval','sent']">Pedido de <span t-field="o.fiscal_category_id.name"/></span>
-								<span t-if="o.state in ['draft','waitingapproval','sent']">Orçamento <span t-field="o.fiscal_category_id.name"/></span>
+								<span t-if="o.state in ['draft','sent']">Orçamento <span t-field="o.fiscal_category_id.name"/></span>
 								<span t-field="o.name"/>
 							</h4>
 							</td>
